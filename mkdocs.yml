@@ -1,4 +1,5 @@
-site_name: 'example-docs'
+site_name: 'My-Angular-App-docs'
+site_description: An Angular app docs + informative 
 
 nav:
   - Home: index.md
