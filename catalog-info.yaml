@@ -8,6 +8,10 @@ metadata:
   tags: 
     - angular
     - js
+  links:
+    - url: https://angular.io
+      title: My Dashboard
+      icon: dashboard
 spec:
   type: website
   lifecycle: production
