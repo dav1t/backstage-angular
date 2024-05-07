@@ -1,23 +1,13 @@
-# apiVersion: backstage.io/v1alpha1
-# kind: Component
-# metadata:
-#   name: backstage-angular
-#   annotations:
-#     github.com/project-slug: dav1t/backstage-angular
-#     backstage.io/techdocs-ref: dir:.
-#   tags: 
-#     - angular
-#     - js
-# spec:
-#   type: website
-#   lifecycle: production
-#   owner: guests
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: backstage-angular
   annotations:
     github.com/project-slug: dav1t/backstage-angular
+    backstage.io/techdocs-ref: dir:.
+  tags: 
+    - angular
+    - js
 spec:
   type: website
   lifecycle: production
