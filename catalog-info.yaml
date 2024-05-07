@@ -7,11 +7,6 @@ metadata:
   tags: 
     - angular
     - js
-  links: 
-    - url: https://angular.io
-      title: Angular Dashboard
-      icon: dashboard
-      type: angular-dashboard
 spec:
   type: website
   lifecycle: production
