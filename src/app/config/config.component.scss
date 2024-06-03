@@ -1,0 +1,22 @@
+.full-width {
+  width: 100%;
+}
+
+:host {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card {
+  width: 500px;
+}
+
+pre {
+  background: whitesmoke;
+  border: 1px solid #dfdfdf;
+  padding: 10px;
+  border-radius: 10px;
+  min-height: 50px;
+}

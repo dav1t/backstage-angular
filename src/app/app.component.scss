@@ -1,0 +1,31 @@
+.logo {
+  height: 25px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+nav {
+  padding: 10px;
+}
+
+:host {
+  display: block;
+  height: 100vh;
+}
+
+header {
+  height: 7%;
+}
+
+.container {
+  min-height: 93%;
+}
+
+main {
+  padding: 10px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}

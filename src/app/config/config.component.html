@@ -1,0 +1,42 @@
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-subtitle>Data Collection</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form">
+      <mat-form-field class="full-width">
+        <mat-label>Data Collection Name</mat-label>
+        <input matInput formControlName="dataCollection" />
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="type">
+          @for (type of types; track type) {
+          <mat-option [value]="type">{{ type }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-footer>
+    @if (loading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+  </mat-card-footer>
+</mat-card>
+
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-subtitle>Preview Result</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <pre><code class="language-html" [innerHTML]="code()">
+      
+    </code></pre>
+    <mat-divider></mat-divider>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-stroked-button>Commit</button>
+  </mat-card-actions>
+</mat-card>
