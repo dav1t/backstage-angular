@@ -37,6 +37,17 @@
     <mat-divider></mat-divider>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-stroked-button>Commit</button>
+    <button mat-stroked-button (click)="commmit()">Commit</button>
   </mat-card-actions>
+  <mat-card-footer>
+    @if (commitLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+  </mat-card-footer>
 </mat-card>
+
+@if (result) {
+<mat-card class="card">
+  <mat-card-content> {{ result }} </mat-card-content>
+</mat-card>
+}

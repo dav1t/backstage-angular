@@ -8,12 +8,14 @@ import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, debounceTime, map, take, tap } from 'rxjs';
+import { ConfigService } from './config.service';
 
 import hljs from 'highlight.js/lib/core';
 import yaml from 'highlight.js/lib/languages/yaml';
 
 import YAML from 'yaml';
-import { debounceTime, map, tap } from 'rxjs';
+import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
 
 hljs.registerLanguage('yaml', yaml);
 
@@ -29,17 +31,26 @@ hljs.registerLanguage('yaml', yaml);
     MatInputModule,
     ReactiveFormsModule,
     MatSelectModule,
+    AsyncPipe,
+    JsonPipe,
+    NgIf,
   ],
   templateUrl: './config.component.html',
   styleUrl: './config.component.scss',
 })
 export class ConfigComponent {
-  loading = signal(false);
-  code!: Signal<string | undefined>;
-  types: string[] = ['Stream', 'Batch'];
   form!: FormGroup;
+  code!: Signal<string | undefined>;
 
-  constructor(private formBuilder: FormBuilder) {
+  loading = signal(false);
+  commitLoading = signal(false);
+  types: string[] = ['Stream', 'Batch'];
+  result?: Object;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private configeService: ConfigService
+  ) {
     this.form = this.formBuilder.group({
       dataCollection: [''],
       type: [''],
@@ -50,12 +61,41 @@ export class ConfigComponent {
       this.form.valueChanges.pipe(
         debounceTime(300),
         tap(() => this.loading.set(true)),
-        map(jsonToYaml),
+        map(highlightYaml),
         tap(() => this.loading.set(false))
       )
     );
   }
+
+  commmit() {
+    this.commitLoading.set(true);
+    const data = {
+      name: this.form.value.dataCollection,
+      content: jsonToYaml(this.form.value),
+      commit: 'Initial commit',
+    };
+
+    this.result = this.configeService
+      .createDataCollection(data)
+      .pipe(
+        take(1),
+        tap(() => this.commitLoading.set(false)),
+        catchError((err) => {
+          this.commitLoading.set(false);
+          return err;
+        })
+      )
+      .subscribe((result) => {
+        this.result = result as Object;
+      });
+  }
 }
+
+const highlightYaml = (code: object): string => {
+  return hljs.highlight(jsonToYaml(code), {
+    language: 'yaml',
+  }).value;
+};
 
 const jsonToYaml = (json: object): string => {
   const doc = new YAML.Document();
@@ -63,7 +103,5 @@ const jsonToYaml = (json: object): string => {
     ...(json as any),
   };
 
-  return hljs.highlight(doc.toString(), {
-    language: 'yaml',
-  }).value;
+  return doc.toString();
 };
