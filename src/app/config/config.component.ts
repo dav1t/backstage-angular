@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { catchError, debounceTime, map, take, tap } from 'rxjs';
+import { EMPTY, catchError, debounceTime, map, take, tap } from 'rxjs';
 import { ConfigService } from './config.service';
 
 import hljs from 'highlight.js/lib/core';
@@ -45,7 +45,7 @@ export class ConfigComponent {
   loading = signal(false);
   commitLoading = signal(false);
   types: string[] = ['Stream', 'Batch'];
-  result?: Object;
+  result?: { repositoryUrl: string, message: string };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -75,19 +75,23 @@ export class ConfigComponent {
       commit: 'Initial commit',
     };
 
-    this.result = this.configeService
+    this.configeService
       .createDataCollection(data)
       .pipe(
         take(1),
         tap(() => this.commitLoading.set(false)),
-        catchError((err) => {
+        catchError(() => {
           this.commitLoading.set(false);
-          return err;
+          return EMPTY;
         })
       )
-      .subscribe((result) => {
-        this.result = result as Object;
+      .subscribe((result: { repositoryUrl: string, message: string }) => {
+        this.result = result;
       });
+  }
+
+  registerComponent() {
+    this.configeService.registerComponent().subscribe(console.log)
   }
 }
 

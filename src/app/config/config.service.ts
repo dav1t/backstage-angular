@@ -11,12 +11,19 @@ export interface DataCollection {
   providedIn: 'root',
 })
 export class ConfigService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   createDataCollection(data: DataCollection) {
-    return this.httpClient.post(
+    return this.httpClient.post<{
+      repositoryUrl: string,
+      message: string,
+    }>(
       'http://localhost:3001/v1/infra/data-collection',
       data
     );
+  }
+
+  registerComponent() {
+    return this.httpClient.get('http://localhost:3001/v1/create-component')
   }
 }

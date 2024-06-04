@@ -9,7 +9,7 @@ metadata:
     - angular
     - js
   links:
-    - url: https://angular.io
+    - url: http://localhost:4200
       title: My Dashboard
       icon: dashboard
 spec:

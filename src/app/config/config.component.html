@@ -46,8 +46,17 @@
   </mat-card-footer>
 </mat-card>
 
-@if (result) {
+@if (result && result.repositoryUrl) {
 <mat-card class="card">
-  <mat-card-content> {{ result }} </mat-card-content>
+  <mat-card-content>
+    <a [href]="result.repositoryUrl" target="_blank">{{result.repositoryUrl}}</a>
+    <br>
+    <button mat-flat-button color="primary" (click)="registerComponent()">Register Component</button>
+  </mat-card-content>
 </mat-card>
+}
+@if (result && result.repositoryUrl === undefined) {
+<p style="color: red;">
+  {{result.message}}
+</p>
 }
