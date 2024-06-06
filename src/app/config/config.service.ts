@@ -23,7 +23,7 @@ export class ConfigService {
     );
   }
 
-  registerComponent() {
-    return this.httpClient.get('http://localhost:3001/v1/create-component')
+  registerComponent(name: string) {
+    return this.httpClient.post('http://localhost:3001/v1/create-component', { name })
   }
 }

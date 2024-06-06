@@ -91,7 +91,7 @@ export class ConfigComponent {
   }
 
   registerComponent() {
-    this.configeService.registerComponent().subscribe(console.log)
+    this.configeService.registerComponent(this.form.get('dataCollection')?.value).subscribe(console.log)
   }
 }
 
