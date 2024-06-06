@@ -16,4 +16,4 @@ spec:
   type: website
   lifecycle: production
   owner: control-plane
-  providesApi: [test-api-service]
+  providesApis: [test-api-service]
