@@ -16,8 +16,16 @@ import yaml from 'highlight.js/lib/languages/yaml';
 
 import YAML from 'yaml';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 hljs.registerLanguage('yaml', yaml);
+
+enum ComponentRequestStatus {
+  NONE,
+  LOADING,
+  SUCCESS,
+  ERROR,
+}
 
 @Component({
   selector: 'app-config',
@@ -34,6 +42,7 @@ hljs.registerLanguage('yaml', yaml);
     AsyncPipe,
     JsonPipe,
     NgIf,
+    MatIconModule,
   ],
   templateUrl: './config.component.html',
   styleUrl: './config.component.scss',
@@ -41,11 +50,15 @@ hljs.registerLanguage('yaml', yaml);
 export class ConfigComponent {
   form!: FormGroup;
   code!: Signal<string | undefined>;
+  componentRequestStatus = ComponentRequestStatus;
 
   loading = signal(false);
   commitLoading = signal(false);
+  registerLoading = signal(false);
   types: string[] = ['Stream', 'Batch'];
-  result?: { repositoryUrl: string, message: string };
+  result?: { repositoryUrl: string; message: string };
+
+  componentStatus = signal(ComponentRequestStatus.NONE);
 
   constructor(
     private formBuilder: FormBuilder,
@@ -85,13 +98,25 @@ export class ConfigComponent {
           return EMPTY;
         })
       )
-      .subscribe((result: { repositoryUrl: string, message: string }) => {
+      .subscribe((result: { repositoryUrl: string; message: string }) => {
         this.result = result;
       });
   }
 
   registerComponent() {
-    this.configeService.registerComponent(this.form.get('dataCollection')?.value).subscribe(console.log)
+    this.componentStatus.set(ComponentRequestStatus.LOADING);
+    this.configeService
+      .registerComponent(this.form.get('dataCollection')?.value)
+      .pipe(
+        take(1),
+        catchError(() => {
+          this.componentStatus.set(ComponentRequestStatus.ERROR);
+          return EMPTY;
+        })
+      )
+      .subscribe(() => {
+        this.componentStatus.set(ComponentRequestStatus.SUCCESS);
+      });
   }
 }
 

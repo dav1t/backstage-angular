@@ -10,7 +10,7 @@ metadata:
     - js
   links:
     - url: http://localhost:4200
-      title: My Dashboard
+      title: PROD
       icon: dashboard
 spec:
   type: website

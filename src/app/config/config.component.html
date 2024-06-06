@@ -49,15 +49,20 @@
 @if (result && result.repositoryUrl) {
 <mat-card class="card">
   <mat-card-content>
-    <a [href]="result.repositoryUrl" target="_blank">{{result.repositoryUrl}}</a>
-    <br>
-    <button mat-flat-button color="primary" (click)="registerComponent()">Register Component</button>
+    <a [href]="result.repositoryUrl" target="_blank">{{
+      result.repositoryUrl
+    }}</a>
+    <br />
+    <button mat-flat-button color="primary" (click)="registerComponent()">
+      Register Component
+    </button>
+
+    @switch (componentStatus()) { @case (componentRequestStatus.LOADING) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar> } }
   </mat-card-content>
 </mat-card>
-}
-@if (result && result.repositoryUrl === undefined) {
-<p style="color: red;">
-  {{result.message}}
+} @if (result && result.repositoryUrl === undefined) {
+<p style="color: red">
+  {{ result.message }}
 </p>
 }
-<button mat-flat-button color="primary" (click)="registerComponent()">Register Component</button>
