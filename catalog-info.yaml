@@ -5,7 +5,7 @@ metadata:
   annotations:
     github.com/project-slug: dav1t/backstage-angular
     backstage.io/techdocs-ref: dir:.
-  tags: 
+  tags:
     - angular
     - js
   links:
@@ -15,4 +15,5 @@ metadata:
 spec:
   type: website
   lifecycle: production
-  owner: guests
+  owner: control-plane
+  providesApi: [test-api-service]
